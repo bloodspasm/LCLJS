@@ -43,4 +43,30 @@ function curentTime() {
 	return(clock);
 }
 
+//将URL中的UTF-8字符串转成中文字符串去除Emoji  
+function getCharFromUtf8(str) {
+	var cstr = "";
+	var nOffset = 0;
+	if(str == "")
+		return "";
+	str = str.toLowerCase();
+	nOffset = str.indexOf("%e");
+	if(nOffset == -1){
+		str = "";
+		return "";
+	}
+	
+	while(nOffset != -1) {
+		cstr += str.substr(0, nOffset);
+		console.log("cstr = "+cstr);
+		str = str.substr(nOffset, str.length - nOffset);
+		if(str == "" || str.length < 9)
+			return cstr;
+		cstr += utf8ToChar(str.substr(0, 9));
+		str = str.substr(9, str.length - 9);
+		nOffset = str.indexOf("%e");
+	}
+	return cstr;
+}
+
 //$.isEmptyObjec({})
